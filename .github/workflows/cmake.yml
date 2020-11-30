@@ -57,9 +57,9 @@ jobs:
       working-directory: ${{ runner.workspace }}
       shell: pwsh
       run: |
-        ls
-        ls 'Program Files'
-        ls 'Program Files (x86)'
+        ls C:/
+        ls 'C:/Program Files'
+        ls 'C:/Program Files (x86)'
     
 #        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
     - name: Installing vcpkg (windows)
