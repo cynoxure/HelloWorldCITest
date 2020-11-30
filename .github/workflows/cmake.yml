@@ -25,7 +25,7 @@ jobs:
       working-directory: ${{ runner.workspace }}
       shell: pwsh
       run: |
-        Invoke-WebRequest -Url http://doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip -Output doxygen-1.8.20.windows.x64.bin.zip
+        Invoke-WebRequest -Uri "http://doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip" -Output "doxygen-1.8.20.windows.x64.bin.zip"
         Expand-Archive -Path "doxygen-1.8.20.windows.x64.bin.zip" -Destination "doxygen" ;\
         Remove-Item doxygen-1.8.20.windows.x64.bin.zip
     
