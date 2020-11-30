@@ -25,8 +25,12 @@ jobs:
       working-directory: ${{ runner.workspace }}
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri "http://doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip" -OutFile "doxygen-1.8.20.windows.x64.bin.zip"
-        Expand-Archive -Path "doxygen-1.8.20.windows.x64.bin.zip" -Destination "doxygen"
+        Invoke-WebRequest 
+          -Uri "http://doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip" 
+          -OutFile "doxygen-1.8.20.windows.x64.bin.zip"
+        Expand-Archive 
+          -Path "doxygen-1.8.20.windows.x64.bin.zip" 
+          -Destination "doxygen"
         Remove-Item doxygen-1.8.20.windows.x64.bin.zip
     
     - name: Pull Repos
@@ -49,16 +53,70 @@ jobs:
         git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
         git clone -b 2011 https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
 
-#     - name: Installing vcpkg (windows)
-#       working-directory: ${{ runner.workspace }}
-#       run: |
-#         git clone https://github.com/Microsoft/vcpkg.git
-#         cd vcpkg
-#         git checkout 
-#         .\bootstrap-vcpkg.bat
-#         .\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
-#         .\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
-# #        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools]  ;\
+    - name: Installing vcpkg (windows)
+      working-directory: ${{ runner.workspace }}
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        cd vcpkg
+        git checkout 
+        .\bootstrap-vcpkg.bat
+        .\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
+        .\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
+#        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
+
+    - name: Prep Navlib Build (windows)
+      working-directory: ${{ runner.workspace }}/navigation_library
+      run: |
+        git checkout feature/multi_vehicle_nav_est 
+        cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
+
+
+    - name: Build Navlib (windows)
+      working-directory: ${{ runner.workspace }}/navigation_library/build
+      run: |
+        cmake -G \"Visual Studio 16 2019\" 
+              -A x64 
+              -DVCPKG_TARGET_TRIPLET=x64-windows 
+              -DCMAKE_TOOLCHAIN_FILE=${{ runner.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake 
+              -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp 
+              -DCMAKE_BUILD_TYPE=$BUILD_TYPE 
+              -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE 
+              -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" 
+              -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" 
+              -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" 
+              -DCMAKE_C_FLAGS=\"/DWIN32 /D_WINDOWS /W3\" 
+              -DCMAKE_C_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" 
+              -DCMAKE_C_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" 
+              -DCMAKE_EXE_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_EXE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" 
+              -DCMAKE_EXE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" 
+              -DCMAKE_MODULE_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_MODULE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" 
+              -DCMAKE_MODULE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" 
+              -DCMAKE_RC_FLAGS=\"-DWIN32\" 
+              -DCMAKE_RC_FLAGS_DEBUG=\"-D_DEBUG\" 
+              -DCMAKE_SHARED_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_SHARED_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" 
+              -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" 
+              -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_INSTALL_LIBDIR=lib 
+              -DBUILD_INCREMENTAL_SOLVER=OFF 
+              -DBUILD_DOCS=OFF 
+              -DCMAKE_VERBOSE_MAKEFILE=OFF 
+              -DBUILD_BENCHMARKS=OFF 
+              -DBUILD_GEOSPATIAL=OFF 
+              -DBUILD_DEMOS=OFF 
+              -DBUILD_RTKLIB_CMD_LINE=OFF 
+              -DBUILD_TESTS=OFF 
+              -DENABLE_GPSTK=OFF 
+              -DENABLE_SYNTHETIC_TESTS=OFF 
+              -DBUILD_SHARED_LIBS=ON 
+              -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/vra_navigation_library 
+              ..    
+        cmake --build . 
+              --config $BUILD_TYPE 
+        cmake --install . 
+              --config $BUILD_TYPE 
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
@@ -73,8 +131,36 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=${{ runner.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
-
+      run: cmake -G \"Visual Studio 16 2019\" 
+              -A x64 
+              -DVCPKG_TARGET_TRIPLET=x64-windows 
+              -DCMAKE_TOOLCHAIN_FILE=${{ runner.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake 
+              -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp 
+              -DCMAKE_BUILD_TYPE=$BUILD_TYPE 
+              -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE 
+              -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" 
+              -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" 
+              -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" 
+              -DCMAKE_C_FLAGS=\"/DWIN32 /D_WINDOWS /W3\" 
+              -DCMAKE_C_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" 
+              -DCMAKE_C_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" 
+              -DCMAKE_EXE_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_EXE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" 
+              -DCMAKE_EXE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" 
+              -DCMAKE_MODULE_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_MODULE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" 
+              -DCMAKE_MODULE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" 
+              -DCMAKE_RC_FLAGS=\"-DWIN32\" 
+              -DCMAKE_RC_FLAGS_DEBUG=\"-D_DEBUG\" 
+              -DCMAKE_SHARED_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_SHARED_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" 
+              -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" 
+              -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" 
+              -DCMAKE_VERBOSE_MAKEFILE=OFF 
+              -DBUILD_TESTS=OFF 
+              -DBUILD_SHARED_LIBS=ON 
+              .. 
+              
     - name: Build Solution (windows)
       working-directory: ${{github.workspace}}/build
       run: cmake --build . --config $BUILD_TYPE 
