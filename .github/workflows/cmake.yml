@@ -46,7 +46,7 @@ jobs:
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/solverframework.git 
         cd solverframework
         git checkout master
-        git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git ;\
+        git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
         git clone -b 2011 https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
 
 #     - name: Installing vcpkg (windows)
