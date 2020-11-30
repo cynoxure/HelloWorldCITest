@@ -21,19 +21,19 @@ jobs:
       with:
           submodules: recursive
 
-    - name: Pull Repos
-      # Use a bash shell so we can use the same syntax for environment variable
-      # access regardless of the host operating system
-      # shell: bash
-      # ${{ runner.workspace }}
-      working-directory: ${{ runner.workspace }}
-      # Note the current convention is to use the -S and -B options here to specify source 
-      # and build directories, but this is only available with CMake 3.13 and higher.  
-      # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: |
-        git clone https://github.com/vethresearch/aspn-v2-lcm-build-vra.git 
-        cd aspn-v2-lcm-build-vra
-        git checkout -t remotes/origin/nativebuild
+    # - name: Pull Repos
+    #   # Use a bash shell so we can use the same syntax for environment variable
+    #   # access regardless of the host operating system
+    #   # shell: bash
+    #   # ${{ runner.workspace }}
+    #   working-directory: ${{ runner.workspace }}
+    #   # Note the current convention is to use the -S and -B options here to specify source 
+    #   # and build directories, but this is only available with CMake 3.13 and higher.  
+    #   # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+    #   run: |
+    #     git clone https://github.com/vethresearch/aspn-v2-lcm-build-vra.git 
+    #     cd aspn-v2-lcm-build-vra
+    #     git checkout -t remotes/origin/nativebuild
 
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
@@ -59,7 +59,7 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_TOOLCHAIN_FILE=${{ runner.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
     - name: Build Solution (windows)
       working-directory: ${{github.workspace}}/build
