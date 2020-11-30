@@ -30,6 +30,7 @@ jobs:
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       # shell: bash
+      # ${{ runner.workspace }}
       working-directory: ${{ github.workspace }}
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
@@ -47,5 +48,5 @@ jobs:
       run: cmake ${{ github.workspace }} -DCMAKE_BUILD_TYPE=$BUILD_TYPE
 
     - name: Build Solution (windows)
-      working-directory: ${{ github.workspace }}/build
-      run: MSBuild.exe CMakeHelloWorld.sln
+      working-directory: ${{github.workspace}}/build
+      run: cmake --build . --config $BUILD_TYPE 
