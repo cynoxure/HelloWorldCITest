@@ -67,7 +67,6 @@ jobs:
       run: |
         C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
-        cat D:\a\HelloWorldCITest\vcpkg\buildtrees\opencv4\install-x64-windows-dbg-out.log
 
     - name: Prep Navlib Build (windows)
       working-directory: ${{ runner.workspace }}/navigation_library
