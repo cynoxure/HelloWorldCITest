@@ -53,16 +53,25 @@ jobs:
         git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
         git clone -b 2011 https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
 
+    - name: List
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
+      run: |
+        ls
+        ls 'Program Files'
+        ls 'Program Files (x86)'
+    
+#        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
       run: |
         git clone https://github.com/Microsoft/vcpkg.git
         cd vcpkg
-        git checkout --force 2020.07
+        git checkout
         .\bootstrap-vcpkg.bat
         .\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
         .\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
-#        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
+        cat D:\a\HelloWorldCITest\vcpkg\buildtrees\opencv4\install-x64-windows-dbg-out.log
 
     - name: Prep Navlib Build (windows)
       working-directory: ${{ runner.workspace }}/navigation_library
@@ -70,7 +79,7 @@ jobs:
         git checkout feature/multi_vehicle_nav_est 
         cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
-
+# -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
     - name: Build Navlib (windows)
       working-directory: ${{ runner.workspace }}/navigation_library/build
       run: |
@@ -130,6 +139,7 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
+          # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
       run: 
         cmake  \
           -G \"Visual Studio 16 2019\"
