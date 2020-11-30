@@ -82,7 +82,7 @@ jobs:
           -G \"Visual Studio 16 2019\" \
           -A x64 \
           -DVCPKG_TARGET_TRIPLET=x64-windows \
-          -DCMAKE_TOOLCHAIN_FILE=${{ runner.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp \
           -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
           -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE \
@@ -140,7 +140,7 @@ jobs:
           -G \"Visual Studio 16 2019\"
           -A x64 \
           -DVCPKG_TARGET_TRIPLET=x64-windows \
-          -DCMAKE_TOOLCHAIN_FILE=${{ runner.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp \
           -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
           -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE \
