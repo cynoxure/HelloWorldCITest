@@ -21,21 +21,35 @@ jobs:
       with:
           submodules: recursive
 
-    - name: Create Build Environment
-      # Some projects don't allow in-source building, so create a separate build directory
-      # We'll use this as our working directory for all subsequent commands
-      run: cmake -E make_directory ${{ github.workspace }}/build
-
-    - name: List Files
+    - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       # shell: bash
       # ${{ runner.workspace }}
-      working-directory: ${{ github.workspace }}
+      working-directory: ${{ runner.workspace }}
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: ls
+      run: |
+        git clone https://vethresearch:e100a295083f865b898b1c20e7faaf30bbee6fe7@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
+        cd aspn-v2-lcm-build-vra
+        git checkout -t remotes/origin/nativebuild
+
+    - name: Installing vcpkg (windows)
+      working-directory: ${{ runner.workspace }}
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        cd vcpkg
+        git checkout 
+        .\bootstrap-vcpkg.bat
+        .\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
+        .\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
+#        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools]  ;\
+
+    - name: Create Build Environment
+      # Some projects don't allow in-source building, so create a separate build directory
+      # We'll use this as our working directory for all subsequent commands
+      run: cmake -E make_directory ${{ github.workspace }}/build
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
