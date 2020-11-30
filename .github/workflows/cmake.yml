@@ -21,6 +21,14 @@ jobs:
       with:
           submodules: recursive
 
+    - name: Download Doxygen
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
+      run: |
+        ADD http://doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip doxygen-1.8.20.windows.x64.bin.zip
+        RUN Expand-Archive -Path "doxygen-1.8.20.windows.x64.bin.zip" -Destination "doxygen" ;\
+            Remove-Item doxygen-1.8.20.windows.x64.bin.zip
+    
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -35,16 +43,16 @@ jobs:
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
 
-    - name: Installing vcpkg (windows)
-      working-directory: ${{ runner.workspace }}
-      run: |
-        git clone https://github.com/Microsoft/vcpkg.git
-        cd vcpkg
-        git checkout 
-        .\bootstrap-vcpkg.bat
-        .\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
-#        .\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
-#        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools]  ;\
+#     - name: Installing vcpkg (windows)
+#       working-directory: ${{ runner.workspace }}
+#       run: |
+#         git clone https://github.com/Microsoft/vcpkg.git
+#         cd vcpkg
+#         git checkout 
+#         .\bootstrap-vcpkg.bat
+#         .\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
+#         .\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
+# #        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools]  ;\
 
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
