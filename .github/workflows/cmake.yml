@@ -31,7 +31,7 @@ jobs:
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: |
-        git clone https://vethresearch:e100a295083f865b898b1c20e7faaf30bbee6fe7@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
+        git clone https://github.com/vethresearch/aspn-v2-lcm-build-vra.git 
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
 
