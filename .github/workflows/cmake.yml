@@ -7,7 +7,7 @@ env:
   BUILD_TYPE: Release
   IFW_MAJOR: 4
   IFW_MINOR: 0
-  IFW_INSTALLER: ${{IFW_MAJOR}}.${{IFW_MINOR}}ifw-win-x86.7z
+  IFW_INSTALLER: 4.0ifw-win-x86.7z
 
 jobs:
   build:
