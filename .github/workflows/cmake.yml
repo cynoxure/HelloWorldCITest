@@ -43,11 +43,11 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
-    - name: List
-      working-directory: ${{ runner.workspace }}
-      shell: pwsh
-      run: |
-        ls ${{ github.workspace }}
+    # - name: List
+    #   working-directory: ${{ runner.workspace }}
+    #   shell: pwsh
+    #   run: |
+    #     ls ${{ github.workspace }}
     #    ls '[vcpkg root]/vcpkg/scripts/buildsystems'
     #     ls C:/
     #     ls 'C:/Program Files'
@@ -91,7 +91,7 @@ jobs:
           -DVCPKG_TARGET_TRIPLET=x64-windows \
           -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp \
-          -DCMAKE_BUILD_TYPE=$BUILD_TYPE \"
+          -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
           -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE \
           -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" \
           -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" \
