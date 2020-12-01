@@ -41,7 +41,7 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest `
-          -Uri "http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw."+${{IFW_MAJOR}}+${{IFW_MINOR}}+"/"+${{IFW_INSTALLER}} `
+          -Uri "http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw."+$IFW_MAJOR+$IFW_MINOR+"/"+$IFW_INSTALLER `
           -OutFile "ifw-install.7z"
         Expand-Archive `
           -Path ifw-install.7z `
