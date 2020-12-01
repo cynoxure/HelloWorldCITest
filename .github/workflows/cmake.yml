@@ -84,9 +84,9 @@ jobs:
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          # -G "\"Visual Studio 16 2019\"" \
       run: |
         cmake  \
-          -G "\"Visual Studio 16 2019\"" \
           -A x64 \
           -DVCPKG_TARGET_TRIPLET=x64-windows \
           -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
