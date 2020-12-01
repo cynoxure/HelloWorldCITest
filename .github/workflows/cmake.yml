@@ -40,9 +40,7 @@ jobs:
         Invoke-WebRequest `
           -Uri "http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw.40/4.0ifw-win-x86.7z" `
           -OutFile "ifw-install.7z"
-        Expand-Archive `
-          -Path ifw-install.7z `
-          -Destination "ifw"
+        7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
     - name: Pull Repos
@@ -176,7 +174,7 @@ jobs:
           -DCMAKE_VERBOSE_MAKEFILE=OFF \
           -DCPACK_BINARY_IFW=ON \
           -DCPACK_BINARY_NSIS=OFF \
-          -DCPACK_IFW_ROOT=${{ runner.workspace }}/Tools/QtInstallerFramework/4.0 \
+          -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 \
           -DCPACK_IFW_VERBOSE=ON \
           -DCPACK_SOURCE_7Z=OFF \
           -DCPACK_SOURCE_ZIP=OFF \
