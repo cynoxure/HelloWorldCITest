@@ -5,9 +5,9 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  IFW_MAJOR: 4
-  IFW_MINOR: 0
-  IFW_INSTALLER: 4.0ifw-win-x86.7z
+  IFW_MAJOR: "4"
+  IFW_MINOR: "0"
+  IFW_INSTALLER: "4.0ifw-win-x86.7z"
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest `
-          -Uri "http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw.${{IFW_MAJOR}}${{IFW_MINOR}}/${{IFW_INSTALLER}}" `
+          -Uri "http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw."+${{IFW_MAJOR}}+${{IFW_MINOR}}+"/"+${{IFW_INSTALLER}} `
           -OutFile "ifw-install.7z"
         Expand-Archive `
           -Path ifw-install.7z `
