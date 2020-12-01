@@ -47,10 +47,11 @@ jobs:
       working-directory: ${{ runner.workspace }}
       shell: pwsh
       run: |
-        ls '[vcpkg root]/vcpkg/scripts/buildsystems'
-        ls C:/
-        ls 'C:/Program Files'
-        ls 'C:/Program Files (x86)'
+        ls ${{ github.workspace }}
+    #    ls '[vcpkg root]/vcpkg/scripts/buildsystems'
+    #     ls C:/
+    #     ls 'C:/Program Files'
+    #     ls 'C:/Program Files (x86)'
     
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
