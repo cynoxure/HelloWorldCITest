@@ -47,10 +47,10 @@ jobs:
       working-directory: ${{ runner.workspace }}
       shell: pwsh
       run: |
+        ls '[vcpkg root]/vcpkg/scripts/buildsystems'
         ls C:/
         ls 'C:/Program Files'
         ls 'C:/Program Files (x86)'
-        ls '[vcpkg root]/vcpkg/scripts/buildsystems'
     
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
@@ -68,6 +68,11 @@ jobs:
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
+
+    - name: Prep Navlib Build (windows)
+      working-directory: ${{ runner.workspace }}/navigation_library
+      run: |
+        cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
@@ -124,11 +129,6 @@ jobs:
       run: |
         C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
-
-    - name: Prep Navlib Build (windows)
-      working-directory: ${{ runner.workspace }}/navigation_library
-      run: |
-        cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
 # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
     - name: Build Navlib (windows)
