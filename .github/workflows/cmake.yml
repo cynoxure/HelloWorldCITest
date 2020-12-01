@@ -121,7 +121,7 @@ jobs:
           -DBUILD_TESTS=OFF \
           -DBUILD_SHARED_LIBS=ON \
           -DVRANavLib_DIR=${{ runner.workspace }}/vra_navigation_library/CMake \
-          .. 
+          ${{ github.workspace }}
               
 #        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
     - name: Installing vcpkg (windows)
