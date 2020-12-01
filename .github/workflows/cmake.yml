@@ -43,6 +43,22 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
+    - name: Installing vcpkg (windows)
+      working-directory: ${{ runner.workspace }}
+      run: |
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows date yaml-cpp lcm eigen3
+
+    - name: List
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
+      run: |
+        ls '[vcpkg root]/vcpkg/scripts/buildsystems'
+        ls '[vcpkg root]/vcpkg/installed/x64-windows/share/e*'
+        ls ${{ github.workspace }}
+    #     ls C:/
+    #     ls 'C:/Program Files'
+    #     ls 'C:/Program Files (x86)'
+    
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -67,17 +83,6 @@ jobs:
         C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
 
-    - name: List
-      working-directory: ${{ runner.workspace }}
-      shell: pwsh
-      run: |
-        ls ${{ github.workspace }}
-        ls '[vcpkg root]/vcpkg/scripts/buildsystems'
-        ls '[vcpkg root]/vcpkg/installed/x64-windows/share/e*'
-    #     ls C:/
-    #     ls 'C:/Program Files'
-    #     ls 'C:/Program Files (x86)'
-    
     - name: Prep Navlib Build (windows)
       working-directory: ${{ runner.workspace }}/navigation_library
       run: |
