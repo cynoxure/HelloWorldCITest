@@ -78,7 +78,7 @@ jobs:
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       #shell: pwsh
-      shell: bash
+      #shell: bash
       working-directory: ${{ github.workspace }}/build
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
@@ -86,7 +86,7 @@ jobs:
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           # -G "\"Visual Studio 16 2019\"" \
       run: |
-        bash -c "cmake $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 ${{ github.workspace }}""
+        cmake "$p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 ${{ github.workspace }}"
       env:
       - p1=' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake '
       - p2=' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE '
@@ -98,8 +98,7 @@ jobs:
       - p8=' -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_VERBOSE_MAKEFILE=OFF '
       - p9=' -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 -DCPACK_IFW_VERBOSE=ON -DCPACK_SOURCE_7Z=OFF -DCPACK_SOURCE_ZIP=OFF '
       - p10=' -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON -DVRANavLib_DIR=${{ runner.workspace }}/vra_navigation_library/CMake '
-          
-              
+            
 #        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
