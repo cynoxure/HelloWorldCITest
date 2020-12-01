@@ -5,6 +5,9 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  IFW_MAJOR: 4
+  IFW_MINOR: 0
+  IFW_INSTALLER: ${{IFW_MAJOR}}.${{IFW_MINOR}}ifw-win-x86.7z
 
 jobs:
   build:
@@ -32,6 +35,18 @@ jobs:
           -Path "doxygen-1.8.20.windows.x64.bin.zip"  `
           -Destination "doxygen"
         Remove-Item doxygen-1.8.20.windows.x64.bin.zip
+
+    - name: Download Doxygen
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
+      run: |
+        Invoke-WebRequest `
+          -Uri "http://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_ifw/qt.tools.ifw.${{IFW_MAJOR}}${{IFW_MINOR}}/${{IFW_INSTALLER}}" `
+          -OutFile "ifw-install.7z"
+        Expand-Archive `
+          -Path ifw-install.7z `
+          -Destination "ifw"
+        Remove-Item ifw-install.7z
     
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
@@ -162,8 +177,15 @@ jobs:
           -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" \
           -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" \
           -DCMAKE_VERBOSE_MAKEFILE=OFF \
+          -DCPACK_BINARY_IFW=ON \
+          -DCPACK_BINARY_NSIS=OFF \
+          -DCPACK_IFW_ROOT=${{ runner.workspace }}/Tools/QtInstallerFramework/4.0 \
+          -DCPACK_IFW_VERBOSE=ON \
+          -DCPACK_SOURCE_7Z=OFF \
+          -DCPACK_SOURCE_ZIP=OFF \
           -DBUILD_TESTS=OFF \
           -DBUILD_SHARED_LIBS=ON \
+          -DVRANavLib_DIR=C:/DEV/vra_navigation_library/CMake \
           .. 
               
     - name: Build Solution (windows)
