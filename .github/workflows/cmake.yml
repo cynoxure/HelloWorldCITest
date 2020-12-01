@@ -43,16 +43,6 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
-    # - name: List
-    #   working-directory: ${{ runner.workspace }}
-    #   shell: pwsh
-    #   run: |
-    #     ls ${{ github.workspace }}
-    #    ls '[vcpkg root]/vcpkg/scripts/buildsystems'
-    #     ls C:/
-    #     ls 'C:/Program Files'
-    #     ls 'C:/Program Files (x86)'
-    
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -77,6 +67,17 @@ jobs:
         C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
 
+    - name: List
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
+      run: |
+        ls ${{ github.workspace }}
+        ls '[vcpkg root]/vcpkg/scripts/buildsystems'
+        ls '[vcpkg root]/vcpkg/installed/x64-windows/share/e*'
+    #     ls C:/
+    #     ls 'C:/Program Files'
+    #     ls 'C:/Program Files (x86)'
+    
     - name: Prep Navlib Build (windows)
       working-directory: ${{ runner.workspace }}/navigation_library
       run: |
@@ -128,7 +129,7 @@ jobs:
         p5: ' -DCMAKE_EXE_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_EXE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" -DCMAKE_EXE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" '
         p6: ' -DCMAKE_MODULE_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_MODULE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" -DCMAKE_MODULE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" '
         p7: ' -DCMAKE_RC_FLAGS=\"-DWIN32\" -DCMAKE_RC_FLAGS_DEBUG=\"-D_DEBUG\"  -DCMAKE_SHARED_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_SHARED_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" '
-        p8: ' -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_VERBOSE_MAKEFILE=OFF '
+        p8: ' -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_VERBOSE_MAKEFILE=OFF -DDOXYGEN_EXECUTABLE=${{ runner.workspace }}/doxygen/doxygen.exe '
         p9: ' -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 -DCPACK_IFW_VERBOSE=ON -DCPACK_SOURCE_7Z=OFF -DCPACK_SOURCE_ZIP=OFF '
         p10: ' -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON -DVRANavLib_DIR=${{ runner.workspace }}/vra_navigation_library/CMake '
             
