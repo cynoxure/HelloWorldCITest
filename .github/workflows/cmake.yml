@@ -53,15 +53,12 @@ jobs:
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
       run: |
+        git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/solverframework.git 
+        git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
+        git clone -b 2011 https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
-        cd ..
-        git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/solverframework.git 
-        cd solverframework
-        git checkout master
-        git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
-        git clone -b 2011 https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
 
     # - name: List
     #   working-directory: ${{ runner.workspace }}
@@ -81,7 +78,7 @@ jobs:
     - name: Prep Navlib Build (windows)
       working-directory: ${{ runner.workspace }}/navigation_library
       run: |
-        cmake -E make_directory build
+        cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
 # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
     - name: Build Navlib (windows)
@@ -132,7 +129,7 @@ jobs:
 
     - name: Create Build Environment
       working-directory: ${{ github.workspace }}
-      run: cmake -E make_directory build
+      run: cmake -E make_directory ${{ github.workspace }}/build
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
