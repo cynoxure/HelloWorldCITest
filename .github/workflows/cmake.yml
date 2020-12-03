@@ -43,6 +43,12 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
+    - name: Set vcpkg (release only)
+      working-directory: C:\vcpkg
+      run: |
+        Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
+        Get-Content -Path .\triplets\x64-windows.cmake
+
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
       run: |
@@ -86,7 +92,7 @@ jobs:
       working-directory: ${{ runner.workspace }}/navigation_library/build
       shell: bash
       run: |
-        cmake "$p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11" ..
+        cmake --trace "$p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 $p11" ..
         cmake --build . --config $BUILD_TYPE 
         cmake --install . --config $BUILD_TYPE 
       env:
