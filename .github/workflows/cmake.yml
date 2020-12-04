@@ -49,7 +49,7 @@ jobs:
         Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
         Get-Content -Path .\triplets\x64-windows.cmake
 
-    - name: Installing vcpkg (windows)
+    - name: Installing eigen (windows)
       working-directory: ${{ runner.workspace }}
       run: |
         C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3
@@ -93,7 +93,7 @@ jobs:
       working-directory: ${{ runner.workspace }}/navigation_library/build
       shell: bash
       run: |
-        cmake --trace "$p1" ..
+        cmake -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake ..
         cmake --build . --config $BUILD_TYPE 
         cmake --install . --config $BUILD_TYPE 
       env:
