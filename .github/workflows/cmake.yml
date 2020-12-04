@@ -60,6 +60,7 @@ jobs:
       run: |
         ls C:/vcpkg/scripts/buildsystems
         ls C:/vcpkg/installed/x64-windows/share/e*
+        ls C:/vcpkg/installed/x64-windows/share/eigen3
         ls ${{ github.workspace }}
     #     ls C:/
     #     ls 'C:/Program Files'
