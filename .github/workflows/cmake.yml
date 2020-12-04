@@ -91,7 +91,7 @@ jobs:
     - name: Set Env 
       shell: bash
       run: |
-        echo " -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake " >> $p1
+        echo "p1= -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake " >> $GITHUB_ENV
 
 # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
     - name: Build Navlib (windows)
