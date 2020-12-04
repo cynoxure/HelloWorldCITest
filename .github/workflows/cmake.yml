@@ -5,6 +5,7 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake '
 
 jobs:
   build:
@@ -88,17 +89,18 @@ jobs:
       run: |
         cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
-    - name: Set Env 
-      shell: bash
-      run: |
-        echo "p1= -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake " >> $GITHUB_ENV
+    # - name: Set Env 
+    #   uses: actions/checkout@v1
+    #   shell: bash
+    #   run: |
+    #     echo "p1= -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake " >> $GITHUB_ENV
 
 # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
     - name: Build Navlib (windows)
       working-directory: ${{ runner.workspace }}/navigation_library/build
       shell: bash
       run: |
-        cmake $env.p1 ..
+        cmake $p1 ..
         cmake --build . --config $BUILD_TYPE 
         cmake --install . --config $BUILD_TYPE 
       env:
