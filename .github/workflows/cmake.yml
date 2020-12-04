@@ -111,13 +111,37 @@ jobs:
       run: |
         cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
+    # - name: Set Env 
+    #   uses: actions/checkout@v1
+    #   shell: bash
+    #   run: |
+    #     echo "p1= -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake " >> $GITHUB_ENV
+
+    # - name: Build Navlib (windows)
+    #   working-directory: ${{ runner.workspace }}/navigation_library/build
+    #   shell: bash
+    #   run: |
+    #     cmake $p1 ..
+    #     cmake --build . --config $BUILD_TYPE 
+    #     cmake --install . --config $BUILD_TYPE 
+        
 # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
+    - name: CMake Navlib (windows)
+      working-directory: ${{ runner.workspace }}/navigation_library/build
+      shell: bash
+      run: |
+        cmake $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 $p11 -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/vra_navigation_library ${{ runner.workspace }}/navigation_library ..
+        
     - name: Build Navlib (windows)
       working-directory: ${{ runner.workspace }}/navigation_library/build
-#      shell: bash
+      shell: bash
       run: |
-        cmake $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 $p11 -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/vra_navigation_library ${{ runner.workspace }}/navigation_library
         cmake --build . --config $BUILD_TYPE 
+        
+    - name: Install Navlib (windows)
+      working-directory: ${{ runner.workspace }}/navigation_library/build
+      shell: bash
+      run: |
         cmake --install . --config $BUILD_TYPE 
         
     - name: Create Build Environment
