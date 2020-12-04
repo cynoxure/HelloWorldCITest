@@ -97,7 +97,7 @@ jobs:
       working-directory: ${{ runner.workspace }}/navigation_library/build
       shell: bash
       run: |
-        cmake "$p1" ..
+        cmake $env.p1 ..
         cmake --build . --config $BUILD_TYPE 
         cmake --install . --config $BUILD_TYPE 
       env:
