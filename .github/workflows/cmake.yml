@@ -89,6 +89,7 @@ jobs:
         cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
     - name: Set Env 
+      shell: bash
       run: |
         echo " -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake " >> $p1
 
