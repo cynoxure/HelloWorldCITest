@@ -58,7 +58,7 @@ jobs:
       working-directory: C:\vcpkg
       run: |
         git fetch --tags
-        git checkout 2020.07 -b master
+        git checkout 2020.07
         Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
         Get-Content -Path .\triplets\x64-windows.cmake
 
