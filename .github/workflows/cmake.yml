@@ -57,6 +57,7 @@ jobs:
     - name: Set vcpkg (release only)
       working-directory: C:\vcpkg
       run: |
+        git checkout 2020.07 -b master
         Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
         Get-Content -Path .\triplets\x64-windows.cmake
 
