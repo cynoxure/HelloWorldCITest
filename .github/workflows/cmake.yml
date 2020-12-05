@@ -54,6 +54,19 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
+    - name: Get vcpkg 2020.07 
+      working-directory: C:\vcpkg
+      run: |
+        git fetch --tags
+        git checkout 2020.07
+        C:\vcpkg\vcpkg.exe update
+        C:\vcpkg\vcpkg.exe upgrade
+
+    - name: Installing pcre - needs debug (windows)
+      working-directory: ${{ runner.workspace }}
+      run: |
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows pcre
+
     - name: Set vcpkg (release only)
       working-directory: C:\vcpkg
       run: |
@@ -61,13 +74,11 @@ jobs:
         git checkout 2020.07
         Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
         Get-Content -Path .\triplets\x64-windows.cmake
-        C:\vcpkg\vcpkg.exe update
-        C:\vcpkg\vcpkg.exe upgrade
 
-    - name: Installing eigen (windows)
+    - name: Installing eigen/yaml-cpp (windows)
       working-directory: ${{ runner.workspace }}
       run: |
-        C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3 pcre
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3
 
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
@@ -114,7 +125,7 @@ jobs:
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
       run: |
-        C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm eigen3 libwebp pcre glib glog gflags glew glfw3 dirent
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] lcm libwebp glib glog gflags glew glfw3 dirent
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
 
     - name: Prep Navlib Build (windows)
