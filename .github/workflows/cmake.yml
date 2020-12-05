@@ -65,25 +65,6 @@ jobs:
       run: |
         C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3
 
-    - name: List
-      working-directory: ${{ runner.workspace }}
-      shell: pwsh
-      run: |
-        ls C:/vcpkg/scripts/buildsystems
-        ls C:/vcpkg/installed/x64-windows/share/e*
-        ls C:/vcpkg/installed/x64-windows/share/eigen3
-        ls ${{ github.workspace }}
-        ls ${{ runner.workspace }}
-    #     ls C:/
-    #     ls 'C:/Program Files'
-    #     ls 'C:/Program Files (x86)'
-    
-    - name: Build Navlib (windows)
-      working-directory: ${{ runner.workspace }}/navigation_library/build
-      shell: bash
-      run: |
-        cmake $p1 $p2 -DCMAKE_CONFIGURATION_TYPES=\"$BUILD_TYPE\" $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 $p11 -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/vra_navigation_library .. 
-        
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
@@ -101,11 +82,30 @@ jobs:
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
 
+    - name: List
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
+      run: |
+        ls C:/vcpkg/scripts/buildsystems
+        ls C:/vcpkg/installed/x64-windows/share/e*
+        ls C:/vcpkg/installed/x64-windows/share/eigen3
+        ls ${{ github.workspace }}
+        ls ${{ runner.workspace }}
+    #     ls C:/
+    #     ls 'C:/Program Files'
+    #     ls 'C:/Program Files (x86)'
+    
     - name: Prep Navlib Build (windows)
       working-directory: ${{ runner.workspace }}/navigation_library
       run: |
         cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
 
+    - name: Build Navlib (windows)
+      working-directory: ${{ runner.workspace }}/navigation_library/build
+      shell: bash
+      run: |
+        cmake $p1 $p2 -DCMAKE_CONFIGURATION_TYPES=\"$BUILD_TYPE\" $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 $p11 -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/vra_navigation_library .. 
+        
 #        .\vcpkg install --triplet x64-windows qt5[activeqt,core,declarative,imageformats,networkauth,svg,tools] 
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
