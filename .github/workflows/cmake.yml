@@ -61,11 +61,13 @@ jobs:
         git checkout 2020.07
         Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
         Get-Content -Path .\triplets\x64-windows.cmake
+        C:\vcpkg\vcpkg.exe update
+        C:\vcpkg\vcpkg.exe upgrade
 
     - name: Installing eigen (windows)
       working-directory: ${{ runner.workspace }}
       run: |
-        C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3 pcre
 
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
