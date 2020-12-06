@@ -5,7 +5,7 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE:FILEPATH="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" '
+  p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows" '
   p2: ' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp '
   p3: ' -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
   p4: ' -DCMAKE_C_FLAGS=\"/DWIN32 /D_WINDOWS /W3\" -DCMAKE_C_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_C_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
@@ -173,7 +173,7 @@ jobs:
           # -G "\"Visual Studio 16 2019\"" \
       run: |
         $env:p1
-        cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON "$env:p1" .. 
+        cmake  -DCMAKE_TOOLCHAIN_FILE:FILEPATH="C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1".. 
       # $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\"
             
     - name: Build Solution (windows)
