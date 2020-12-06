@@ -2,9 +2,9 @@ cmake_minimum_required (VERSION 3.15)
 project (CMakeHelloWorld)
 
 #version number
-set (CMakeHelloWorld_VERSION_MAJOR 1)
-set (CMakeHelloWorld_VERSION_MINOR 0)
-
+set (PROJECT_VERSION_MAJOR 1)
+set (PROJECT_VERSION_MINOR 0)
+set (PROJECT_VERSION_PATCH 0)
 #find dependencies
 #find_package(cppzmq REQUIRED)
 
@@ -19,3 +19,5 @@ add_executable (CMakeHelloWorld Hello HelloWorld.cpp)
 target_link_libraries (CMakeHelloWorld Hello)
 
 install (TARGETS CMakeHelloWorld DESTINATION bin)
+
+add_subdirectory(package)
