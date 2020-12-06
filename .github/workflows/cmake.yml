@@ -5,7 +5,7 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake '
+  p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows '
   p2: ' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp '
   p3: ' -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
   p4: ' -DCMAKE_C_FLAGS=\"/DWIN32 /D_WINDOWS /W3\" -DCMAKE_C_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_C_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
@@ -13,7 +13,7 @@ env:
   p6: ' -DCMAKE_MODULE_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_MODULE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" -DCMAKE_MODULE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" '
   p7: ' -DCMAKE_RC_FLAGS=\"-DWIN32\" -DCMAKE_RC_FLAGS_DEBUG=\"-D_DEBUG\"  -DCMAKE_SHARED_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_SHARED_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" '
   p8: ' -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_VERBOSE_MAKEFILE=OFF '
-  p9: ' -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_INCREMENTAL_SOLVER=OFF -DBUILD_DOCS=OFF -DBUILD_GEOSPATIAL=OFF -DBUILD_DEMOS=OFF -DBUILD_RTKLIB_CMD_LINE=OFF -DENABLE_GPSTK=OFF -DENABLE_SYNTHETIC_TESTS=OFF '
+  p9: ' -DBUILD_GEOSPATIAL=OFF -DBUILD_DEMOS=OFF -DBUILD_RTKLIB_CMD_LINE=OFF -DENABLE_GPSTK=OFF -DENABLE_SYNTHETIC_TESTS=OFF '
   p10: ' -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_SOURCE_7Z=OFF -DCPACK_SOURCE_ZIP=OFF '
   p11: ' -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON '
 
@@ -61,6 +61,8 @@ jobs:
         git checkout 2020.07
         C:\vcpkg\vcpkg.exe update
         C:\vcpkg\vcpkg.exe upgrade
+        C:\vcpkg\bootstrap-vcpkg.bat
+        C:\vcpkg\vcpkg.exe integrate install
 
     - name: Installing pcre - needs debug fro some reason (windows)
       working-directory: ${{ runner.workspace }}
@@ -70,15 +72,13 @@ jobs:
     - name: Set vcpkg (release only)
       working-directory: C:\vcpkg
       run: |
-        git fetch --tags
-        git checkout 2020.07
         Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
         Get-Content -Path .\triplets\x64-windows.cmake
 
     - name: Installing eigen/yaml-cpp (windows)
       working-directory: ${{ runner.workspace }}
       run: |
-        C:\vcpkg\vcpkg.exe install --triplet x64-windows yaml-cpp eigen3
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows eigen3
 
     - name: Pull Repos
       # Use a bash shell so we can use the same syntax for environment variable
@@ -97,20 +97,20 @@ jobs:
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
 
-    - name: List
-      working-directory: ${{ runner.workspace }}
-      shell: pwsh
-      run: |
-        ls C:/vcpkg/scripts/buildsystems
-        ls C:/vcpkg/installed/x64-windows/share/e*
-        ls C:/vcpkg/installed/x64-windows/share/eigen3
-        ls ${{ github.workspace }}
-        ls ${{ runner.workspace }}
-        ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC'
-        ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/'
-        ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/'
-        ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/'
-        ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/'
+    # - name: List
+    #   working-directory: ${{ runner.workspace }}
+    #   shell: pwsh
+    #   run: |
+    #     ls C:/vcpkg/scripts/buildsystems
+    #     ls C:/vcpkg/installed/x64-windows/share/e*
+    #     ls C:/vcpkg/installed/x64-windows/share/eigen3
+    #     ls ${{ github.workspace }}
+    #     ls ${{ runner.workspace }}
+    #     ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC'
+    #     ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/'
+    #     ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/'
+    #     ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/'
+    #     ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin/Hostx64/x64/'
     #     ls C:/
     #     ls 'C:/Program Files'
 
@@ -129,7 +129,7 @@ jobs:
     - name: Installing vcpkg (windows)
       working-directory: ${{ runner.workspace }}
       run: |
-        C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] lcm libwebp glib glog gflags glew glfw3 dirent
+        C:\vcpkg\vcpkg.exe install --triplet x64-windows date ceres[eigensparse] yaml-cpp lcm libwebp glib glog gflags glew glfw3 dirent
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
 
     - name: Prep Navlib Build (windows)
@@ -142,7 +142,7 @@ jobs:
       working-directory: ${{ runner.workspace }}/navigation_library/build
       shell: bash
       run: |
-        cmake $p1 $p2 -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" $p11 -DCMAKE_INSTALL_PREFIX=\"${{ runner.workspace }}/vra_navigation_library\" .. 
+        cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPES=$BUILD_TYPE $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 $env:p11 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DCMAKE_INSTALL_PREFIX=\"${{ runner.workspace }}/vra_navigation_library\" .. 
         
     - name: Build Navlib (windows)
       working-directory: ${{ runner.workspace }}/navigation_library/build
@@ -172,7 +172,7 @@ jobs:
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           # -G "\"Visual Studio 16 2019\"" \
       run: |
-        cmake $p1 $p2 -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DVRANavLib_DIR=\"${{ runner.workspace }}/vra_navigation_library/CMake\" .. 
+        cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPES=$BUILD_TYPE $$envp1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DVRANavLib_DIR:FILE_PATH=\"${{ runner.workspace }}/vra_navigation_library/CMake\" .. 
             
     - name: Build Solution (windows)
       working-directory: ${{github.workspace}}/build
@@ -185,6 +185,6 @@ jobs:
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
       with:
-        name: HelloWorld-Installer
-        path: build/HelloWorld-Installer.exe
+        name: CMakeHelloWorld-Installer
+        path: ${{github.workspace}}/build/*.exe
         retention-days: 5
