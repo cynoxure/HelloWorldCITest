@@ -185,8 +185,9 @@ jobs:
       run: cmake --build . --config $BUILD_TYPE -t PACKAGE
 
     - name: 'Upload Artifact'
+      working-directory: ${{github.workspace}}/build
       uses: actions/upload-artifact@v2
       with:
-        name: HelloWorld-Installer
-        path: build/HelloWorld-Installer.exe
+        name: CMakeHelloWorld-Installer
+        path: *.exe
         retention-days: 5
