@@ -172,7 +172,7 @@ jobs:
           # -G "\"Visual Studio 16 2019\"" \
       run: |
         $env.p1
-        cmake .. -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE "$p1 "
+        cmake .. -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
       # $p2 $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\"
             
     - name: Build Solution (windows)
