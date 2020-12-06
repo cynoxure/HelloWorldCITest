@@ -61,6 +61,7 @@ jobs:
         git checkout 2020.07
         C:\vcpkg\vcpkg.exe update
         C:\vcpkg\vcpkg.exe upgrade
+        C:\vcpkg\bootstrap-vcpkg.bat
 
     # - name: Installing pcre - needs debug fro some reason (windows)
     #   working-directory: ${{ runner.workspace }}
@@ -170,6 +171,7 @@ jobs:
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           # -G "\"Visual Studio 16 2019\"" \
       run: |
+        echo $p1
         cmake $p1 $p2 -DCMAKE_CONFIGURATION_TYPES=$BUILD_TYPE $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" .. 
             
     - name: Build Solution (windows)
