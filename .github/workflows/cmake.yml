@@ -107,6 +107,7 @@ jobs:
         ls ${{ github.workspace }}
         ls ${{ runner.workspace }}
         ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC'
+        ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.2933/'
         ls 'C:/Program Files (x86)/Misrosoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.29333/bin'
         ls 'C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.28.28333/bin/Hostx64/x64'
     #     ls C:/
