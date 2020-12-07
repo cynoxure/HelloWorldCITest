@@ -202,7 +202,7 @@ jobs:
         cmake --build . --config $env:BUILD_TYPE 
 
     - name: Package Solution (windows)
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}
       run: |
         cpack --config MultiCPackConfig.cmake 
 
