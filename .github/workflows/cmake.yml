@@ -92,7 +92,7 @@ jobs:
       run: |
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/solverframework.git 
         git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
-        git clone --depth 1 -b develop https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vra/navlib.git 
+        git clone --depth 1 -b develop https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/navlib.git 
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
