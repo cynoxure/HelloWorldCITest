@@ -204,12 +204,12 @@ jobs:
     - name: Package Solution (windows)
       working-directory: ${{github.workspace}}
       run: |
-        cpack --config MultiCPackConfig.cmake 
+        cpack --verbose --config MultiCPackConfig.cmake 
 
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
       with:
         name: CMakeHelloWorld-Installer
-        path: ${{github.workspace}}/build/*.exe
+        path: ${{github.workspace}}/*.exe
         retention-days: 5
