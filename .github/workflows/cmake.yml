@@ -170,7 +170,7 @@ jobs:
         DIRECTORY: ${{ matrix.directory }}
       working-directory: ${{ github.workspace }}
       run: |
-        cmake -E make_directory ${{ github.workspace }}/$DIRECTORY
+        cmake -E make_directory ${{ github.workspace }}/$env:DIRECTORY
         ls ${{ github.workspace }}
 
     - name: Configure CMake
