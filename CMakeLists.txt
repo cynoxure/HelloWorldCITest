@@ -25,6 +25,7 @@ set_target_properties(CMakeHelloWorld PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POS
 target_link_libraries (CMakeHelloWorld Hello)
 
 #install (TARGETS CMakeHelloWorld COMPONENT HelloWorld DESTINATION bin)
+include(GNUInstallDirs)
 
 install(TARGETS CMakeHelloWorld
     COMPONENT HelloWorld
