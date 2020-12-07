@@ -169,7 +169,9 @@ jobs:
       env:
         DIRECTORY: ${{ matrix.directory }}
       working-directory: ${{ github.workspace }}
-      run: cmake -E make_directory ${{ github.workspace }}/$DIRECTORY
+      run: |
+        cmake -E make_directory ${{ github.workspace }}/$DIRECTORY
+        ls ${{ github.workspace }}
 
     - name: Configure CMake
       env:
@@ -186,7 +188,7 @@ jobs:
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           # -G "\"Visual Studio 16 2019\"" \
       run: |
-        cd $DIRECTORY
+        cd "$DIRECTORY"
         cmake  -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" .. 
       # $p9 $p10
             
