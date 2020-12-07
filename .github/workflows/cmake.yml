@@ -5,16 +5,16 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows '
-  p2: ' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp '
   p3: ' -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
   p4: ' -DCMAKE_C_FLAGS=\"/DWIN32 /D_WINDOWS /W3\" -DCMAKE_C_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_C_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
   p5: ' -DCMAKE_EXE_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_EXE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" -DCMAKE_EXE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" '
   p6: ' -DCMAKE_MODULE_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_MODULE_LINKER_FLAGS_RELEASE=\"/INCREMENTAL:NO\" -DCMAKE_MODULE_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" '
   p7: ' -DCMAKE_RC_FLAGS=\"-DWIN32\" -DCMAKE_RC_FLAGS_DEBUG=\"-D_DEBUG\"  -DCMAKE_SHARED_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_SHARED_LINKER_FLAGS_RELEASE=\" /INCREMENTAL:NO \" '
   p8: ' -DCMAKE_SHARED_LINKER_FLAGS_DEBUG=\"/debug /INCREMENTAL\" -DCMAKE_STATIC_LINKER_FLAGS=\"/machine:x64\" -DCMAKE_VERBOSE_MAKEFILE=OFF '
-  p9: ' -DBUILD_GEOSPATIAL=OFF -DBUILD_DEMOS=OFF -DBUILD_RTKLIB_CMD_LINE=OFF -DENABLE_GPSTK=OFF -DENABLE_SYNTHETIC_TESTS=OFF '
-  p10: ' -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_SOURCE_7Z=OFF -DCPACK_SOURCE_ZIP=OFF '
-  p11: ' -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON '
+  # p2: ' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp '
+  # p9: ' -DBUILD_GEOSPATIAL=OFF -DBUILD_DEMOS=OFF -DBUILD_RTKLIB_CMD_LINE=OFF -DENABLE_GPSTK=OFF -DENABLE_SYNTHETIC_TESTS=OFF '
+  # p10: ' -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_SOURCE_7Z=OFF -DCPACK_SOURCE_ZIP=OFF '
+  # p11: ' -DBUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON '
 
 jobs:
   build:
@@ -97,12 +97,12 @@ jobs:
     - name: Configure CMake (Release)
       working-directory: ${{ github.workspace }}/release
       run: |
-        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p10 -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_IFW_ROOT:PATH=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 .. 
+        cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_IFW_ROOT:PATH=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 .. 
 
     - name: Configure CMake (Debug)
       working-directory: ${{ github.workspace }}/debug
       run: |
-        cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p10 -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_IFW_ROOT:PATH=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 .. 
+        cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_IFW_ROOT:PATH=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 .. 
             
     - name: Build Solution (windows)
       working-directory: ${{ github.workspace }}/release
