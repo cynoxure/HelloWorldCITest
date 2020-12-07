@@ -4,7 +4,6 @@ on: [push]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
   p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows '
   p2: ' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp '
   p3: ' -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
@@ -24,6 +23,16 @@ jobs:
     # cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: windows-2019
+
+    strategy:
+      matrix:
+        include:
+         - build_type: Release
+           directory: "release"
+           datacenter: "site-a"
+         - build_type: Debug
+           directory: "debug"
+           datacenter: "site-b"
 
     steps:
     #- uses: actions/checkout@v2
@@ -69,11 +78,11 @@ jobs:
     #   run: |
     #     C:\vcpkg\vcpkg.exe install --triplet x64-windows pcre
 
-    - name: Set vcpkg (release only)
-      working-directory: C:\vcpkg
-      run: |
-        Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
-        Get-Content -Path .\triplets\x64-windows.cmake
+    # - name: Set vcpkg (release only)
+    #   working-directory: C:\vcpkg
+    #   run: |
+    #     Add-Content -Path .\triplets\x64-windows.cmake -Value 'set(VCPKG_BUILD_TYPE release)' 
+    #     Get-Content -Path .\triplets\x64-windows.cmake
 
     - name: Installing eigen (windows)
       working-directory: ${{ runner.workspace }}
@@ -157,15 +166,20 @@ jobs:
     #     cmake --install . --config $BUILD_TYPE 
         
     - name: Create Build Environment
+      env:
+        DIRECTORY: ${{ matrix.directory }}
       working-directory: ${{ github.workspace }}
-      run: cmake -E make_directory ${{ github.workspace }}/build
+      run: cmake -E make_directory ${{ github.workspace }}/$DIRECTORY
 
     - name: Configure CMake
+      env:
+        DIRECTORY: ${{ matrix.directory }}
+        BUILD_TYPE: ${{ matrix.build_type }}
       # Use a bash shell so we can use the same syntax for environment variable
       # access regardless of the host operating system
       #shell: pwsh
       #shell: bash
-      working-directory: ${{ github.workspace }}/build
+      working-directory: ${{ github.workspace }}/$DIRECTORY
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
@@ -176,16 +190,18 @@ jobs:
       # $p9 $p10
             
     - name: Build Solution (windows)
+      env:
+        BUILD_TYPE: ${{ matrix.build_type }}
       working-directory: ${{github.workspace}}/build
       run: cmake --build . --config $BUILD_TYPE 
 
-    - name: Package Solution (windows)
-      working-directory: ${{github.workspace}}/build
-      run: cmake --build . --config $BUILD_TYPE -t PACKAGE
+    # - name: Package Solution (windows)
+    #   working-directory: ${{github.workspace}}/build
+    #   run: cmake --build . --config $BUILD_TYPE -t PACKAGE
 
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
-      with:
-        name: CMakeHelloWorld-Installer
-        path: ${{github.workspace}}/build/*.exe
-        retention-days: 5
+    # - name: 'Upload Artifact'
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: CMakeHelloWorld-Installer
+    #     path: ${{github.workspace}}/build/*.exe
+    #     retention-days: 5
