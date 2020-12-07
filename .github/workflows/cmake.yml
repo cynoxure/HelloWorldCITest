@@ -4,6 +4,7 @@ on: [push]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_COUNT: 0
   p1: ' -A x64 -DVCPKG_TARGET_TRIPLET=x64-windows '
   p2: ' -DASPN_INCLUDE_DIR=C:/DEV/aspn-v2-lcm-build-vra/cpp '
   p3: ' -DCMAKE_CXX_FLAGS=\"/DWIN32 /D_WINDOWS /W3 /GR /EHsc\" -DCMAKE_CXX_FLAGS_RELEASE=\"/MD /O2 /Ob2 /DNDEBUG\" -DCMAKE_CXX_FLAGS_DEBUG=\"/MDd /Zi /Ob0 /Od /RTC1\" '
@@ -43,6 +44,13 @@ jobs:
       working-directory: ${{ runner.workspace }}
       shell: pwsh
       run: |
+        echo "BUILD_COUNT=${BUILD_COUNT}"
+        printenv
+        env:BUILD_COUNT = $BUILD_COUNT + 1
+        echo "BUILD_COUNT=${BUILD_COUNT}"
+        printenv
+        echo "BUILD_COUNT=${BUILD_COUNT}+1"
+        printenv
         Invoke-WebRequest `
           -Uri "http://doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip"  `
           -OutFile "doxygen-1.8.20.windows.x64.bin.zip"
