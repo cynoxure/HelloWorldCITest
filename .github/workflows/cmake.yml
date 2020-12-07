@@ -181,13 +181,14 @@ jobs:
       # access regardless of the host operating system
       #shell: pwsh
       #shell: bash
-      working-directory: ${{ github.workspace }}/$env:DIRECTORY
+      working-directory: ${{ github.workspace }}
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           # -G "\"Visual Studio 16 2019\"" \
       run: |
+        cd $env:DIRECTORY
         cmake  -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$env:BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" .. 
       # $p9 $p10
             
@@ -195,8 +196,9 @@ jobs:
       env:
         DIRECTORY: ${{ matrix.directory }}
         BUILD_TYPE: ${{ matrix.build_type }}
-      working-directory: ${{ github.workspace }}/$env:DIRECTORY
+      working-directory: ${{ github.workspace }}
       run: |
+        cd $env:DIRECTORY
         cmake --build . --config $env:BUILD_TYPE 
 
     # - name: Package Solution (windows)
