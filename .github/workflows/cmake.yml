@@ -92,7 +92,7 @@ jobs:
       run: |
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/solverframework.git 
         git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
-        git clone -b 2011 https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
+        git clone -b develop https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
@@ -179,7 +179,7 @@ jobs:
       run: cmake --build . --config $BUILD_TYPE 
 
     - name: Package Solution (windows)
-      working-directory: ${{github.workspace}}/build
+      working-directory: ${{github.workspace}}
       run: cmake --build . --config $BUILD_TYPE -t PACKAGE
 
     - name: 'Upload Artifact'
