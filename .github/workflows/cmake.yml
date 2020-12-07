@@ -53,20 +53,20 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
-    - name: Get vcpkg 2020.07 
-      working-directory: C:\vcpkg
-      run: |
-        git fetch --tags
-        git checkout 2020.07
-        C:\vcpkg\vcpkg.exe update
-        C:\vcpkg\vcpkg.exe upgrade
-        C:\vcpkg\bootstrap-vcpkg.bat
-        C:\vcpkg\vcpkg.exe integrate install
+    # - name: Get vcpkg 2020.07 
+    #   working-directory: C:\vcpkg
+    #   run: |
+    #     git fetch --tags
+    #     git checkout 2020.07
+    #     C:\vcpkg\vcpkg.exe update
+    #     C:\vcpkg\vcpkg.exe upgrade
+    #     C:\vcpkg\bootstrap-vcpkg.bat
+    #     C:\vcpkg\vcpkg.exe integrate install
 
-    - name: Installing eigen (windows)
-      working-directory: ${{ runner.workspace }}
-      run: |
-        C:\vcpkg\vcpkg.exe install --triplet x64-windows eigen3
+    # - name: Installing eigen (windows)
+    #   working-directory: ${{ runner.workspace }}
+    #   run: |
+    #     C:\vcpkg\vcpkg.exe install --triplet x64-windows eigen3
 
     # - name: List
     #   working-directory: ${{ runner.workspace }}
@@ -117,7 +117,6 @@ jobs:
       working-directory: ${{github.workspace}}
       run: |
         cpack --verbose --config MultiCPackConfig.cmake 
-
 
     - name: 'Upload Artifact'
       uses: actions/upload-artifact@v2
