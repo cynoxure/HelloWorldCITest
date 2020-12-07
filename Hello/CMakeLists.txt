@@ -10,5 +10,5 @@ target_link_libraries(Hello
                         Eigen3::Eigen
                         )
 
-install (TARGETS Hello DESTINATION bin)
-install (FILES Speaker.h DESTINATION include)
+install (TARGETS Hello  COMPONENT Hello DESTINATION bin)
+install (FILES Speaker.h DESTINATION include COMPONENT Hello)
