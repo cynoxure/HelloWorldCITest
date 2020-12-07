@@ -142,7 +142,7 @@ jobs:
       working-directory: ${{ runner.workspace }}/navlib/build
       shell: bash
       run: |
-        cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPES=$BUILD_TYPE $env:p1 -DASPN_INCLUDE_DIR:PATH=\"C:/DEV/aspn-v2-lcm-build-vra/cpp\" $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 $env:p11 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DCMAKE_INSTALL_PREFIX=\"${{ runner.workspace }}/vra_navigation_library\" .. 
+        cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPES=$BUILD_TYPE $env:p1 -DASPN_INCLUDE_DIR:PATH=\"${{ runner.workspace }}/aspn-v2-lcm-build-vra/cpp\" $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 $env:p11 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DCMAKE_INSTALL_PREFIX=\"${{ runner.workspace }}/vra_navigation_library\" .. 
         
     - name: Build Navlib (windows)
       working-directory: ${{ runner.workspace }}/navlib/build
@@ -172,7 +172,7 @@ jobs:
           # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/vcpkg/scripts/buildsystems/vcpkg.cmake \
           # -G "\"Visual Studio 16 2019\"" \
       run: |
-        cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE $$envp1 -DASPN_INCLUDE_DIR:PATH=\"C:/DEV/aspn-v2-lcm-build-vra/cpp\" $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DCPACK_PACKAGE_DIRECTORY:PATH=\"C:/PACKAGE\" -DVRANavLib_DIR:FILE_PATH=\"${{ runner.workspace }}/vra_navigation_library/CMake\" .. 
+        cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE $$envp1 -DASPN_INCLUDE_DIR:PATH=\"${{ runner.workspace }}/aspn-v2-lcm-build-vra/cpp\" $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DCPACK_PACKAGE_DIRECTORY:PATH=\"C:/PACKAGE\" -DVRANavLib_DIR:FILE_PATH=\"${{ runner.workspace }}/vra_navigation_library/CMake\" .. 
             
     - name: Build Solution (windows)
       working-directory: ${{github.workspace}}/build
