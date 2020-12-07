@@ -19,6 +19,7 @@ add_subdirectory (Hello)
 include_directories(Hello)
 #indicate the entry point for the executable
 add_executable (CMakeHelloWorld Hello HelloWorld.cpp)
+set_target_properties(CMakeHelloWorld PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 
 # Indicate which libraries to include during the link process.
 target_link_libraries (CMakeHelloWorld Hello)
