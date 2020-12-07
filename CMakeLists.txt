@@ -24,6 +24,18 @@ set_target_properties(CMakeHelloWorld PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POS
 # Indicate which libraries to include during the link process.
 target_link_libraries (CMakeHelloWorld Hello)
 
-install (TARGETS CMakeHelloWorld COMPONENT HelloWorld DESTINATION bin)
+#install (TARGETS CMakeHelloWorld COMPONENT HelloWorld DESTINATION bin)
+
+install(TARGETS CMakeHelloWorld
+    COMPONENT HelloWorld
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/Release CONFIGURATIONS Release
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/Release CONFIGURATIONS Release
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/Release CONFIGURATIONS Release )
+
+install(TARGETS CMakeHelloWorld
+    COMPONENT HelloWorld
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}/Debug CONFIGURATIONS Debug
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/Debug CONFIGURATIONS Debug
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}/Debug CONFIGURATIONS Debug)
 
 add_subdirectory(package)
