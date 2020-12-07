@@ -21,6 +21,6 @@ add_executable (CMakeHelloWorld Hello HelloWorld.cpp)
 # Indicate which libraries to include during the link process.
 target_link_libraries (CMakeHelloWorld Hello)
 
-install (TARGETS CMakeHelloWorld DESTINATION bin)
+install (TARGETS CMakeHelloWorld COMPONENT HelloWorld DESTINATION bin)
 
 add_subdirectory(package)
