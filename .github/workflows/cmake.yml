@@ -108,7 +108,7 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: |
         cd $env:DIRECTORY
-        cmake  -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$env:BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p10 -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" .. 
+        cmake  -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPE=$env:BUILD_TYPE -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON $env:p1 $env:p2 $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p10 -DCPACK_BINARY_IFW=ON -DCPACK_BINARY_NSIS=OFF -DCPACK_IFW_VERBOSE=ON -DCPACK_IFW_ROOT:PATH=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 .. 
             
     - name: Build Solution (windows)
       env:
