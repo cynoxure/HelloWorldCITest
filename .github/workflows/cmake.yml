@@ -53,10 +53,17 @@ jobs:
         7z x -o${{ runner.workspace }}\QtIFW ifw-install.7z
         Remove-Item ifw-install.7z
     
-    - name: Bootstrap vcpkg 
-      working-directory: ${{ github.workspace }}/vcpkg
+    - name: List
+      working-directory: ${{ runner.workspace }}
+      shell: pwsh
       run: |
-        bootstrap-vcpkg.bat
+        ls ${{ github.workspace }}
+        ls ${{ github.workspace }}/vcpkg
+        ls ${{ github.workspace }}/vcpkg/scripts/buildsystems
+
+    - name: Bootstrap vcpkg 
+      run: |
+        ${{ github.workspace }}/vcpkg/bootstrap-vcpkg.bat
 
     # - name: Installing eigen (windows)
     #   working-directory: ${{ runner.workspace }}
