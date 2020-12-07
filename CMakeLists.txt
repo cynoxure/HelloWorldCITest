@@ -24,8 +24,9 @@ set_target_properties(CMakeHelloWorld PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POS
 # Indicate which libraries to include during the link process.
 target_link_libraries (CMakeHelloWorld Hello)
 
-#install (TARGETS CMakeHelloWorld COMPONENT HelloWorld DESTINATION bin)
 include(GNUInstallDirs)
+
+#install (TARGETS CMakeHelloWorld COMPONENT HelloWorld DESTINATION bin)
 
 install(TARGETS CMakeHelloWorld
     COMPONENT HelloWorld

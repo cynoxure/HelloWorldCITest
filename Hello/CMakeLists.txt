@@ -15,8 +15,11 @@ target_link_libraries(Hello
                         Eigen3::Eigen
                         )
 
+include(GNUInstallDirs)
+
 #install (TARGETS Hello COMPONENT HelloLib DESTINATION lib)
-install (FILES Speaker.h DESTINATION include COMPONENT HelloLib)
+
+install (FILES Speaker.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT HelloLib)
 
 install(TARGETS Hello
     COMPONENT HelloLib
