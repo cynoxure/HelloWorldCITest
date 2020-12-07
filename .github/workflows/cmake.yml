@@ -114,12 +114,14 @@ jobs:
       env:
         DIRECTORY: ${{ matrix.directory }}
         BUILD_TYPE: ${{ matrix.build_type }}
+        DONE: ${{ matrix.done }}
       working-directory: ${{ github.workspace }}
       run: |
         cd $env:DIRECTORY
         cmake --build . --config $env:BUILD_TYPE 
 
     - name: Package Solution (windows)
+      if: ${{ success() }}
       working-directory: ${{github.workspace}}
       run: |
         cpack --verbose --config MultiCPackConfig.cmake 
