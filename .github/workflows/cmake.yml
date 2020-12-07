@@ -92,7 +92,7 @@ jobs:
       run: |
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/solverframework.git 
         git clone --depth 1 -b 2011 https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/image_tracking_library.git
-        git clone -b develop https://gitlab+deploy-token-290381:${{ secrets.NAVLIB_GITLAB_TOKEN }}@gitlab.com/vra/navigation_library.git 
+        git clone --depth 1 -b develop https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vra/navlib.git 
         git clone https://vethresearch:${{ secrets.VRA_REPO_CLONE_TOKEN }}@github.com/vethresearch/aspn-v2-lcm-build-vra.git 
         cd aspn-v2-lcm-build-vra
         git checkout -t remotes/origin/nativebuild
@@ -115,12 +115,12 @@ jobs:
     #     ls 'C:/Program Files'
 
     # - name: Prep Navlib Build (windows)
-    #   working-directory: ${{ runner.workspace }}/navigation_library
+    #   working-directory: ${{ runner.workspace }}/navlib
     #   run: |
-    #     cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
+    #     cmake -E make_directory ${{ runner.workspace }}/navlib/build
 
     # - name: Build Navlib (windows)
-    #   working-directory: ${{ runner.workspace }}/navigation_library/build
+    #   working-directory: ${{ runner.workspace }}/navlib/build
     #   shell: bash
     #   run: |
     #     cmake $p1 $p2 -DCMAKE_CONFIGURATION_TYPES=\"$BUILD_TYPE\" $p3 $p4 $p5 $p6 $p7 $p8 $p9 $p10 -DCPACK_IFW_ROOT=${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0 $p11 -DCMAKE_INSTALL_PREFIX=${{ runner.workspace }}/vra_navigation_library .. 
@@ -133,25 +133,25 @@ jobs:
         C:\vcpkg\vcpkg.exe install --triplet x64-windows opencv[png,jpeg,tiff,webp,eigen,nonfree,contrib]
 
     - name: Prep Navlib Build (windows)
-      working-directory: ${{ runner.workspace }}/navigation_library
+      working-directory: ${{ runner.workspace }}/navlib
       run: |
-        cmake -E make_directory ${{ runner.workspace }}/navigation_library/build
+        cmake -E make_directory ${{ runner.workspace }}/navlib/build
 
 # -DCMAKE_TOOLCHAIN_FILE=[vcpkg root]/scripts/buildsystems/vcpkg.cmake \
     - name: CMake Navlib (windows)
-      working-directory: ${{ runner.workspace }}/navigation_library/build
+      working-directory: ${{ runner.workspace }}/navlib/build
       shell: bash
       run: |
         cmake -DCMAKE_TOOLCHAIN_FILE:FILEPATH=C:/vcpkg/scripts/buildsystems/vcpkg.cmake -DCMAKE_BUILD_TYPES=$BUILD_TYPE $env:p1 -DASPN_INCLUDE_DIR:PATH=\"C:/DEV/aspn-v2-lcm-build-vra/cpp\" $env:p3 $env:p4 $env:p5 $env:p6 $env:p7 $env:p8 $env:p9 $env:p10 $env:p11 -DCPACK_IFW_ROOT:PATH=\"${{ runner.workspace }}/QtIFW/Tools/QtInstallerFramework/4.0\" -DCMAKE_INSTALL_PREFIX=\"${{ runner.workspace }}/vra_navigation_library\" .. 
         
     - name: Build Navlib (windows)
-      working-directory: ${{ runner.workspace }}/navigation_library/build
+      working-directory: ${{ runner.workspace }}/navlib/build
       shell: bash
       run: |
         cmake --build . --config $BUILD_TYPE 
         
     - name: Install Navlib (windows)
-      working-directory: ${{ runner.workspace }}/navigation_library/build
+      working-directory: ${{ runner.workspace }}/navlib/build
       shell: bash
       run: |
         cmake --install . --config $BUILD_TYPE 
