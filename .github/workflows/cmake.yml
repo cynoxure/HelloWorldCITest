@@ -27,9 +27,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: windows-2019
+        os: [ubuntu-latest, macos-latest, windows-latest]
         include:
-          - os: windows-2019
+          - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: '56fffbe49dfb4dd8fae0940f272c5fd2b86be991'
           - os: ubuntu-latest
