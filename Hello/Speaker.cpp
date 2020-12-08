@@ -1,5 +1,6 @@
 #include "Speaker.h"
 #include <Eigen/Core>
+#include <yaml-cpp/yaml.h>
 
 using namespace Hello;
 using namespace std;
@@ -13,6 +14,8 @@ namespace Hello {
 
     Matrix3d dpwgs_dpe;
     Matrix3d dpwgs_dpe_true;
+
+    YAML::Node node;
 
     pe << -6378137.0, 50000.0, 50000.0;
     pwgs_true << 0.0078917029111,
