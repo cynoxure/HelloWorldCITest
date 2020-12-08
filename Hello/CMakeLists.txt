@@ -4,6 +4,7 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_DEBUG_POSTFIX d)
 
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(yaml-cpp REQUIRED)
 
 add_library (Hello 
   Speaker.h
@@ -13,6 +14,7 @@ set_target_properties(Hello PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
 target_link_libraries(Hello
                         PRIVATE 
                         Eigen3::Eigen
+                        yaml-cpp
                         )
 
 include(GNUInstallDirs)

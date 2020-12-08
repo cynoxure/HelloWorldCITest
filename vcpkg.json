@@ -2,6 +2,7 @@
     "name": "hello",
     "version-string": "1.0.0",
     "dependencies": [
-        "eigen3"
+        "eigen3",
+        "yaml-cpp"
     ]
 }
